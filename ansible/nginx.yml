@@ -1,0 +1,7 @@
+- hosts: main
+  become:  
+    true
+  become_method: 
+    sudo
+  roles:
+   - nginx
