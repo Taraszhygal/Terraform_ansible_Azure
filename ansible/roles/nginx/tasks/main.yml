@@ -3,7 +3,34 @@
     name: nginx
     state: latest
 
-- name: Install Nginx
+- name: start nginx
   service:
     name: nginx
     state: started
+
+- name: create www directory
+  file:
+    path: /var/www/{{ hostname }}
+    state: directory
+    mode: '0775'
+    owner: root
+    group: root  
+    
+- name: Replace NGINX config 
+  template:
+    src=templates/nginx.conf
+    dest=/etc/nginx/nginx.conf
+ 
+- name: Delete default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Copy nginx vhost.conf
+  template:
+    src=templates/nginx_vhost.conf
+    dest=/etc/nginx/sites-enabled/{{ hostname }}.conf
+  notify:
+    - NGINX restart   
+
+

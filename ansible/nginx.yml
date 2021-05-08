@@ -1,4 +1,8 @@
 - hosts: main
+  vars:
+    nginx_user: www-data
+    worker_processes: auto
+    worker_connections: 512
   become:  
     true
   become_method: 
